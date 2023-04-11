@@ -1,0 +1,51 @@
+.homeCard {
+    height: 35vh;
+    margin: auto;
+    margin-left: 6vw;
+    border-radius: 0.5rem;
+    margin: auto;
+}
+
+.knowMoreBtnContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.img {
+    margin: auto;
+    height: 35vh;
+    width: 25vw;
+    border-radius: 0.5rem;
+}
+
+.btn {
+    margin: auto;
+    background-color: pink;
+    text-align: center;
+}
+
+@media screen and (max-device-width: 512px) {
+    .homeCard {
+        position: relative;
+        height: auto !important;
+        width: 100%;
+        margin: auto;
+        margin-left: 0vw;
+        border-radius: 0.5rem;
+        margin-top: 0vh;
+    }
+
+    .img {
+        position: relative;
+        margin: auto;
+        height: 100%;
+        width: 80%;
+        border-radius: 0.5rem;
+    }
+
+    .btn {
+        margin: auto;
+        text-align: center;
+        margin-bottom: 1vh;
+    }
+}

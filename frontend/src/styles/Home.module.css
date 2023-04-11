@@ -1,0 +1,82 @@
+.page {
+    background-color: white;
+    /* width: 100vw; */
+}
+.body {
+    position: relative;
+    height: auto;
+    height: auto;
+}
+
+.slider {
+    height: 80vh;
+}
+
+.slider .image {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+}
+.container {
+    border: none;
+}
+.textBtn {
+    position: relative;
+    border: none;
+    margin: auto;
+}
+
+.btnContainer {
+    margin: auto;
+    text-align: center;
+    justify-content: space-around;
+}
+
+.imageContainer {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    height: 43vh;
+}
+
+@media screen and (max-device-width: 480px) {
+    .body {
+        position: relative;
+        height: auto;
+        height: 240vh;
+    }
+
+    .slider {
+        height: 80vh;
+    }
+
+    .slider .image {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        object-fit: cover;
+    }
+
+    .textBtn {
+        position: relative;
+        border: none;
+        margin: auto;
+    }
+
+    .btnContainer {
+        margin: auto;
+        text-align: center;
+    }
+
+    .imageContainer {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin-top: 10vh;
+    }
+}
