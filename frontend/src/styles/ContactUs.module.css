@@ -1,0 +1,58 @@
+.contactUs.body {
+  background-color: white;
+}
+
+.contactUs .page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 75vw;
+  height: 80vh;
+  margin: auto;
+  margin-top: 4.5vh;
+  margin-bottom: 5vh;
+  border: calc(0.1vh + 0.05vw) solid orange;
+  border-radius: 3rem;
+  background-color: rgb(36, 101, 122);
+  color: white;
+}
+
+.contactUs .page h2 {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15vh;
+}
+
+.contactUs .page h3 {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2vh;
+}
+
+.contactUs .view {
+  display: flex;
+  flex-direction: row;
+}
+
+.contactUs .divided {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  margin: auto;
+  margin-top: 10vh;
+}
+
+.contactUs .divided.box {
+  height: 25vh;
+  width: 25vw;
+  background-color: aliceblue;
+  border-radius: 1rem;
+  color: black;
+}
+
+.contactUs .divided.box .contactLinks {
+  margin: auto;
+  flex-direction: column;
+  color: rgb(52, 166, 66);
+  text-align: center;
+}

@@ -1,6 +1,7 @@
 .body {
   margin: auto;
-  margin-top: 1vh;
+  margin-top: 2vh;
+  margin-bottom: 3vh;
   border: 1px solid black;
   width: 95vw;
   height: 86vh;

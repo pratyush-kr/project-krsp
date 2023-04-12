@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Header } from "@/components/HeaderComponent";
 import { Footer } from "@/components/FooterComponent";
 import Member from "@/components/Member";
 import styles from "@/styles/AboutUs.module.css";
+import { UserContext } from "@/contexts/UserContext";
 
 const members = [
   {
@@ -86,6 +87,14 @@ const members = [
 ];
 
 const AboutUs = () => {
+  const user = useContext(UserContext);
+  useEffect(() => {
+    const cookie: string | null = localStorage.getItem("user_info");
+    if (cookie === null) {
+      return;
+    }
+    user.login();
+  });
   return (
     <div style={{ backgroundColor: "white" }}>
       <Header />
