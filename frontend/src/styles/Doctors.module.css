@@ -1,0 +1,74 @@
+.body {
+  background-color: white;
+}
+.doctorBox {
+  margin: auto;
+  width: 80vw;
+  height: 85vh;
+  margin-top: 2vh;
+  margin-bottom: 3vh;
+  border: 1px solid black;
+  border-radius: 3rem;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: auto;
+  margin-top: 8vh;
+}
+
+.box {
+  width: 35vw;
+  margin: 2vh;
+  background-color: rgb(89, 181, 47);
+  box-shadow: 0 1vw 1vw 0 rgb(217, 198, 198);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.imgContainer {
+  width: 10vw;
+  height: 90%;
+  overflow: hidden;
+  border-radius: 15rem;
+}
+
+.imgContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details {
+  padding: 20px;
+  text-align: center;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.experience {
+  font-size: 18px;
+}
+
+.btn.fixed {
+  position: absolute;
+  margin: auto;
+  width: inherit;
+  bottom: 5vh;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .box {
+    width: 100%;
+  }
+}
