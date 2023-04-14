@@ -4,6 +4,7 @@ import { Footer } from "@/components/FooterComponent";
 import Member from "@/components/Member";
 import styles from "@/styles/AboutUs.module.css";
 import { UserContext } from "@/contexts/UserContext";
+import axios from "axios";
 
 const members = [
   {
@@ -90,7 +91,11 @@ const AboutUs = () => {
   const user = useContext(UserContext);
   useEffect(() => {
     const cookie: string | null = localStorage.getItem("user_info");
-    if (cookie === null) {
+    const guestCookie: string | null = sessionStorage.getItem("guest_info");
+    if (cookie === null && guestCookie === null) {
+      axios.get(axios.defaults.baseURL + "/krsp/user/get_token/").then((res) => {
+        sessionStorage.setItem("guest_info", res.data.jwt);
+      });
       return;
     }
     user.login();

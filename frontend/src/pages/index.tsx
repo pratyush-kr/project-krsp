@@ -8,6 +8,7 @@ import { useEffect, useContext } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import { JwtCookie } from "@/types/JwtCookie";
 import Slider from "@/components/Slider";
+import axios from "axios";
 
 /*prettier-ignore*/
 const images = {
@@ -24,6 +25,13 @@ export default function Home() {
   const userContext = useContext(UserContext);
   useEffect(() => {
     const cookie: string | null = localStorage.getItem("user_info");
+    const guestCookie: string | null = sessionStorage.getItem("guest_info");
+    if (cookie === null && guestCookie === null) {
+      axios.get(axios.defaults.baseURL + "/krsp/user/get_token/").then((res) => {
+        sessionStorage.setItem("guest_info", res.data.jwt);
+      });
+      return;
+    }
     if (cookie === null) {
       return;
     }

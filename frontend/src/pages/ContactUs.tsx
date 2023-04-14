@@ -3,11 +3,17 @@ import { Header } from "@/components/HeaderComponent";
 import { Footer } from "@/components/FooterComponent";
 import styles from "@/styles/ContactUs.module.css";
 import { UserContext } from "@/contexts/UserContext";
+import axios from "axios";
+
 const ContactUs = () => {
   const user = useContext(UserContext);
   useEffect(() => {
     const cookie: string | null = localStorage.getItem("user_info");
-    if (cookie === null) {
+    const guestCookie: string | null = sessionStorage.getItem("guest_info");
+    if (cookie === null && guestCookie === null) {
+      axios.get(axios.defaults.baseURL + "/krsp/user/get_token/").then((res) => {
+        sessionStorage.setItem("guest_info", res.data.jwt);
+      });
       return;
     }
     user.login();

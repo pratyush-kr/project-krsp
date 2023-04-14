@@ -12,6 +12,7 @@ import StarRatings from "react-star-ratings";
 import { UserContext } from "@/contexts/UserContext";
 import { useContext } from "react";
 import styles from "@/styles/Doctors.module.css";
+import { JwtCookie } from "@/types/JwtCookie";
 function Doctors() {
   const [openDialog, setOpenDialog] = useState(false);
   const [page, setPage] = useState(0);
@@ -28,14 +29,30 @@ function Doctors() {
     },
   ]);
   useEffect(() => {
-    axios.get(axios.defaults.baseURL + "/krsp/doctors/get_doctors/").then((res) => {
+    const cookie: string | null = localStorage.getItem("user_info");
+    let guestCookie: string | null = sessionStorage.getItem("guest_info");
+    if (cookie !== null) {
+      sessionStorage.removeItem("guest_info");
+    }
+    if (cookie === null && guestCookie === null) {
+      axios.get(axios.defaults.baseURL + "/krsp/user/get_token/").then((res) => {
+        sessionStorage.setItem("guest_info", JSON.stringify(res.data));
+      });
+    }
+    let jwt_cookie: JwtCookie =
+      cookie !== null ? JSON.parse(cookie) : JSON.parse(guestCookie !== null ? guestCookie : "");
+    const config = {
+      headers: {
+        Authorization: `Bearer ${jwt_cookie.jwt}`,
+      },
+    };
+    axios.get(axios.defaults.baseURL + "/krsp/doctors/get_doctors/", config).then((res) => {
       setDoctors(res.data.users);
-      const cookie: string | null = localStorage.getItem("user_info");
-      if (cookie === null) {
-        return;
-      }
-      user.login();
     });
+    if (cookie === null) {
+      return;
+    }
+    user.login();
   }, []);
   const handleReview = (event: React.MouseEvent) => {
     const id = event.currentTarget.id;
