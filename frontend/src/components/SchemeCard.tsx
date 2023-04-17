@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PaidIcon from "@mui/icons-material/Paid";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
@@ -17,6 +17,13 @@ interface Props {
 const SchemeCard: React.FC<Props> = ({ scheme, index }) => {
     const scheme_context = useContext(SchemeContext);
     const selected_scheme_context = useContext(SelectedContext);
+    const [constantDelay, setConstantDelay] = useState(false);
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            console.log("HEY");
+            setConstantDelay(true);
+        }, 100);
+    });
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         const id = event.currentTarget.id;
         console.log(id);
@@ -60,7 +67,7 @@ const SchemeCard: React.FC<Props> = ({ scheme, index }) => {
             }}
             transition={{
                 type: "spring",
-                delay: 0.5 * index,
+                delay: !constantDelay ? 0.5 * index : 0.1,
                 duration: 0.75,
                 ease: "easeOut",
             }}

@@ -8,13 +8,15 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import { UserContext } from "@/contexts/UserContext";
 import { useContext } from "react";
+import { JwtCookie } from "@/types/JwtCookie";
+import { User as UserClass } from "@/models/User";
 
 interface Props {
     isOpen: boolean;
 }
 
 const LoginDialog: React.FC<Props> = ({ isOpen }) => {
-    const user = useContext(UserContext);
+    const userContext = useContext(UserContext);
     const [msg, setMsg] = useState("");
     const [data, setData] = useState({
         email: "",
@@ -25,26 +27,21 @@ const LoginDialog: React.FC<Props> = ({ isOpen }) => {
         const value = event.target.value;
         setData({ ...data, [name]: value });
     };
-    const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const formData = {
-            email: data.email,
-            password: data.password,
-        };
-        axios.defaults.withCredentials = true;
-        console.log(axios.defaults.baseURL);
-        axios
-            .post(axios.defaults.baseURL + "/krsp/user/login/", formData)
-            .then((res) => {
-                user.login();
-                localStorage.setItem("user_info", JSON.stringify(res.data));
-                user.setUsername(res.data["name"]);
-            })
-            .catch((err) => {
-                console.log(err);
-                const msg = err.response.data.msg;
-                setMsg(msg);
-            });
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const user: UserClass = new UserClass();
+        try {
+            const response = await user.loginRequest(
+                data.get("email") as string,
+                data.get("password") as string
+            );
+            localStorage.setItem("user_info", response);
+            userContext.login();
+        } catch (error: any) {
+            setMsg(error.message);
+        }
     };
     return (
         <Dialog open={isOpen}>

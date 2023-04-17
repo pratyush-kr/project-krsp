@@ -3,6 +3,7 @@ import { User } from "@/types/User";
 interface Props {
     children: React.ReactNode;
 }
+
 export const UserContext = createContext<User>({
     isAuthenticated: false,
     name: "",
