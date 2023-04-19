@@ -81,7 +81,6 @@ export class User implements UserType {
                 },
             };
             const res = await axios.post(this.baseUrl + "/krsp/user/verify_token/", {}, this.config);
-            console.log(res);
             if (res.status === 200) {
                 return true;
             }

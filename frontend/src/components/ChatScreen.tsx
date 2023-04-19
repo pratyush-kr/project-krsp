@@ -6,8 +6,13 @@ import axios from "axios";
 import { UserContext } from "@/contexts/UserContext";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import { People } from "@/types/People";
 
-const ChatScreen = () => {
+interface Props {
+    openChatWith: People;
+}
+
+const ChatScreen = ({ openChatWith }: Props) => {
     const router = useRouter();
     const chatContainerRef = useRef<null | HTMLDivElement>(null);
     const [message, setMessage] = useState("");
@@ -18,7 +23,7 @@ const ChatScreen = () => {
         const date = new Date();
         const new_message = {
             message: message,
-            room_id: "1",
+            room_id: openChatWith.room_id,
             date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
             time: `${date.getHours()}:${date.getMinutes()}`,
             name: "You",
@@ -37,19 +42,35 @@ const ChatScreen = () => {
                 Authorization: `Bearer ${jwt_cookie.jwt}`,
             },
         };
-        axios
-            .post(axios.defaults.baseURL + "/krsp/chat/chat_with_bot/", new_message, config)
-            .then((res) => {
-                setData((data) => [...data, res.data]);
-            })
-            .catch((err: AxiosError) => {
-                if (err.response?.status === 401) {
-                    userContext.logout();
-                    localStorage.removeItem("user_info");
-                    sessionStorage.removeItem("guest_info");
-                    router.push("/Login");
-                }
-            });
+        if (openChatWith.name === "Assistant") {
+            axios
+                .post(axios.defaults.baseURL + "/krsp/chat/chat_with_bot/", new_message, config)
+                .then((res) => {
+                    setData((data) => [...data, res.data]);
+                })
+                .catch((err: AxiosError) => {
+                    if (err.response?.status === 401) {
+                        userContext.logout();
+                        localStorage.removeItem("user_info");
+                        sessionStorage.removeItem("guest_info");
+                        router.push("/Login");
+                    }
+                });
+        } else {
+            axios
+                .post(axios.defaults.baseURL + "/krsp/chat/send_message/", new_message, config)
+                .then((res) => {
+                    setData((data) => [...data, res.data]);
+                })
+                .catch((err: AxiosError) => {
+                    if (err.response?.status === 401) {
+                        userContext.logout();
+                        localStorage.removeItem("user_info");
+                        sessionStorage.removeItem("guest_info");
+                        router.push("/Login");
+                    }
+                });
+        }
     };
 
     useEffect(() => {
@@ -64,7 +85,11 @@ const ChatScreen = () => {
             },
         };
         axios
-            .post(axios.defaults.baseURL + "/krsp/chat/load_chats/", { room_id: "1" }, config)
+            .post(
+                axios.defaults.baseURL + "/krsp/chat/load_chats/",
+                { room_id: openChatWith.room_id },
+                config
+            )
             .then((res) => {
                 setData(res.data);
             })

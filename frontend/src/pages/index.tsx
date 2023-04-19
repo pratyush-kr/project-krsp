@@ -8,7 +8,7 @@ import { useEffect, useContext } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import { JwtCookie } from "@/types/JwtCookie";
 import Slider from "@/components/Slider";
-import axios from "axios";
+import { User as UserClass } from "@/models/User";
 
 /*prettier-ignore*/
 const images = {
@@ -24,34 +24,20 @@ export default function Home() {
     };
     const userContext = useContext(UserContext);
     useEffect(() => {
-        // Retrieve JWT from localStorage
-        const cookie: string | null = localStorage.getItem("user_info");
-
-        // Retrieve JWT from sessionStorage
-        const guestCookie: string | null = sessionStorage.getItem("guest_info");
-
-        // If neither JWTs are present, get a new guest JWT from the server
-        if (cookie === null && guestCookie === null) {
-            axios.get(axios.defaults.baseURL + "/krsp/user/get_token/").then((res) => {
-                sessionStorage.setItem("guest_info", JSON.stringify(res.data));
-            });
-            // Return to prevent further execution
-            return;
-        }
-
-        // If user JWT is not present, return to prevent further execution
-        if (cookie === null) {
-            return;
-        }
-
-        // Parse the JWT from the cookie
-        const jwtCookie: JwtCookie = JSON.parse(cookie);
-
-        // Set the user's username in the userContext
-        userContext.setUsername(jwtCookie.name);
-
-        // Log the user in
-        userContext.login();
+        const loader = async () => {
+            const user: UserClass = new UserClass();
+            const validToken: boolean = await user.verifyToken();
+            if (!validToken) {
+                userContext.logout();
+                user.getAndSaveGuestToken();
+                localStorage.removeItem("user_info");
+                return;
+            }
+            const cookie: JwtCookie = user.getCookieJson();
+            userContext.setUsername(cookie.name);
+            userContext.login();
+        };
+        loader();
     }, []);
     // The empty array ensures that the useEffect function is only called once, during the initial render of the component.
     return (
