@@ -7,6 +7,7 @@ import { JwtCookie } from "@/types/JwtCookie";
 import { People } from "@/types/People";
 import React from "react";
 import router from "next/router";
+import io from "socket.io-client";
 
 interface Data {
   name: string;
@@ -54,12 +55,12 @@ export class Rooms {
     return response.data.room_id;
   };
 
-  static sendMessage = (
+  static chatWithBot = async (
     message: string,
     openChatWith: People,
     setMessage: React.Dispatch<React.SetStateAction<string>>,
     setData: React.Dispatch<React.SetStateAction<Data[]>>,
-    userContext: User
+    userContext: UserType
   ) => {
     const date = new Date();
     const new_message = {
@@ -73,44 +74,80 @@ export class Rooms {
     setData((data) => {
       return [...data, new_message];
     });
-    const cookie: string | null = localStorage.getItem("user_info");
-    if (cookie === null) {
-      return;
+    const user: User = new User();
+    const validToken: boolean = await user.verifyToken();
+    if (!validToken) {
+      userContext.logout();
+      localStorage.removeItem("user_info");
     }
-    const jwt_cookie: JwtCookie = JSON.parse(cookie);
+    const jwtCookie: JwtCookie = user.getCookieJson();
     const config = {
       headers: {
-        Authorization: `Bearer ${jwt_cookie.jwt}`,
+        Authorization: `Bearer ${jwtCookie.jwt}`,
       },
     };
-    if (openChatWith.name === "Assistant") {
-      axios
-        .post(axios.defaults.baseURL + "/krsp/chat/chat_with_bot/", new_message, config)
-        .then((res) => {
-          setData((data) => [...data, res.data]);
-        })
-        .catch((err: AxiosError) => {
-          if (err.response?.status === 401) {
-            userContext.logout();
-            localStorage.removeItem("user_info");
-            sessionStorage.removeItem("guest_info");
-            router.push("/Login");
-          }
-        });
-    } else {
-      axios
-        .post(axios.defaults.baseURL + "/krsp/chat/send_message/", new_message, config)
-        .then((res) => {
-          setData((data) => [...data, res.data]);
-        })
-        .catch((err: AxiosError) => {
-          if (err.response?.status === 401) {
-            userContext.logout();
-            localStorage.removeItem("user_info");
-            sessionStorage.removeItem("guest_info");
-            router.push("/Login");
-          }
-        });
+    try {
+      const response = await axios.post(
+        axios.defaults.baseURL + "/krsp/chat/chat_with_bot/",
+        new_message,
+        config
+      );
+      setData((data) => [...data, response.data]);
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        userContext.logout();
+        localStorage.removeItem("user_info");
+        sessionStorage.removeItem("guest_info");
+        router.push("/Login");
+      }
+    }
+  };
+
+  static sendMessage = async (
+    message: string,
+    openChatWith: People,
+    setMessage: React.Dispatch<React.SetStateAction<string>>,
+    setData: React.Dispatch<React.SetStateAction<Data[]>>,
+    userContext: UserType
+  ) => {
+    const date = new Date();
+    const new_message = {
+      message: message,
+      room_id: openChatWith.room_id,
+      date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+      time: `${date.getHours()}:${date.getMinutes()}`,
+      name: "You",
+    };
+    setMessage((prevMessage: string) => "");
+    setData((data) => {
+      return [...data, new_message];
+    });
+    const user: User = new User();
+    const validToken: boolean = await user.verifyToken();
+    if (!validToken) {
+      userContext.logout();
+      localStorage.removeItem("user_info");
+    }
+    const jwtCookie: JwtCookie = user.getCookieJson();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${jwtCookie.jwt}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        axios.defaults.baseURL + "/krsp/chat/send_message/",
+        new_message,
+        config
+      );
+      setData((data) => [...data, response.data]);
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        userContext.logout();
+        localStorage.removeItem("user_info");
+        sessionStorage.removeItem("guest_info");
+        router.push("/Login");
+      }
     }
   };
 }

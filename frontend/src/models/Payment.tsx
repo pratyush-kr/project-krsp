@@ -94,7 +94,11 @@ export class Payment {
         Authorization: `Bearer ${jwtToken.jwt}`,
       },
     };
-    const response = await axios.post(this.baseUrl + "/krsp/order/handle_payment_success/", formData, config);
+    const response = await axios.post(
+      axios.defaults.baseURL + "/krsp/order/handle_payment_success/",
+      formData,
+      config
+    );
     if (response.status === 401) {
       alert("payment not done");
       return response.data.error;

@@ -7,7 +7,7 @@ import ChatScreen from "./pages/ChatScreen";
 import { SelectChat } from "@/components/ChatApp/pages/SelectChat";
 import { makeStyles } from "@mui/styles";
 import { People } from "@/types/People";
-import { PeopleContext, people_default } from "@/contexts/PeopleContext";
+import { PeopleContext } from "@/contexts/PeopleContext";
 
 const useStyles = makeStyles((theme: Theme) => ({
   btnContainer: {

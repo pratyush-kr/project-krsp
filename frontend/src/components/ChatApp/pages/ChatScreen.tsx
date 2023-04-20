@@ -6,9 +6,12 @@ import axios from "axios";
 import { UserContext } from "@/contexts/UserContext";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { User } from "@/models/User";
 import { People } from "@/types/People";
 import { PeopleContext } from "@/contexts/PeopleContext";
+import { Rooms } from "@/models/ChatRoom";
+import io, { Socket } from "socket.io-client";
+import { Token } from "@mui/icons-material";
+import { User } from "@/models/User";
 
 const ChatScreen = () => {
   const people: People = useContext(PeopleContext);
@@ -17,60 +20,12 @@ const ChatScreen = () => {
   const [message, setMessage] = useState("");
   const [data, setData] = useState([{ name: "", message: "", date: "", time: "" }]);
   const userContext = useContext(UserContext);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const sendMessage = async () => {
-    const date = new Date();
-    const new_message = {
-      message: message,
-      room_id: people.room_id,
-      date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-      time: `${date.getHours()}:${date.getMinutes()}`,
-      name: "You",
-    };
-    setMessage((prevMessage: string) => "");
-    setData((data) => {
-      return [...data, new_message];
-    });
-    const user: User = new User();
-    const validToken: boolean = await user.verifyToken();
-    if (!validToken) {
-      userContext.logout();
-      localStorage.removeItem("user_info");
-    }
-    const jwtCookie: JwtCookie = user.getCookieJson();
-    const config = {
-      headers: {
-        Authorization: `Bearer ${jwtCookie.jwt}`,
-      },
-    };
-    console.log(people);
     if (people.name === "Assistant") {
-      axios
-        .post(axios.defaults.baseURL + "/krsp/chat/chat_with_bot/", new_message, config)
-        .then((res) => {
-          setData((data) => [...data, res.data]);
-        })
-        .catch((err: AxiosError) => {
-          if (err.response?.status === 401) {
-            userContext.logout();
-            localStorage.removeItem("user_info");
-            sessionStorage.removeItem("guest_info");
-            router.push("/Login");
-          }
-        });
+      const response = await Rooms.chatWithBot(message, people, setMessage, setData, userContext);
     } else {
-      axios
-        .post(axios.defaults.baseURL + "/krsp/chat/send_message/", new_message, config)
-        .then((res) => {
-          setData((data) => [...data, res.data]);
-        })
-        .catch((err: AxiosError) => {
-          if (err.response?.status === 401) {
-            userContext.logout();
-            localStorage.removeItem("user_info");
-            sessionStorage.removeItem("guest_info");
-            router.push("/Login");
-          }
-        });
+      const response = await Rooms.sendMessage(message, people, setMessage, setData, userContext);
     }
   };
 
@@ -110,6 +65,18 @@ const ChatScreen = () => {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [open, data]);
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:8000", {
+      extraHeaders: {
+        Authorization: `Bearer ${new User().getCookieJson().jwt}`,
+      },
+    });
+    setSocket(newSocket);
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
   return (
     <div>
       <div className={styles.chat} ref={chatContainerRef}>
