@@ -8,125 +8,121 @@ import emailjs from "emailjs-com";
 import { NextRouter } from "next/router";
 
 interface Options {
-    key: string;
-    amount: number;
-    order_id: string;
-    currency: string;
+  key: string;
+  amount: number;
+  order_id: string;
+  currency: string;
+  name: string;
+  handler: (response: StartPaymentResponse) => void;
+  prefill: {
     name: string;
-    handler: (response: StartPaymentResponse) => void;
-    prefill: {
-        name: string;
-        email: string;
-        contact: string;
-    };
+    email: string;
+    contact: string;
+  };
 }
 
 interface Data {
-    userName: string;
-    email: string;
-    appointment_date: string;
-    contact: string;
-    doctor: string;
-    appointment_time: string;
-    doctor_id: string;
+  userName: string;
+  email: string;
+  appointment_date: string;
+  contact: string;
+  doctor: string;
+  appointment_time: string;
+  doctor_id: string;
 }
 
 export class Payment {
-    static baseUrl = axios.defaults.baseURL;
-    static createStartPaymentForm = (schemeContext: Scheme, data: Data): FormData => {
-        let bodyData = new FormData();
-        bodyData.append("amount", schemeContext.cost);
-        bodyData.append("userName", data.userName);
-        bodyData.append("email", data.email);
-        bodyData.append("appointment_date", data.appointment_date);
-        bodyData.append("appointment_time", data.appointment_time);
-        bodyData.append("doctor", data.doctor);
-        bodyData.append("contact", data.contact);
-        return bodyData;
-    };
+  static baseUrl = axios.defaults.baseURL;
+  static createStartPaymentForm = (schemeContext: Scheme, data: Data): FormData => {
+    let bodyData = new FormData();
+    bodyData.append("amount", schemeContext.cost);
+    bodyData.append("userName", data.userName);
+    bodyData.append("email", data.email);
+    bodyData.append("appointment_date", data.appointment_date);
+    bodyData.append("appointment_time", data.appointment_time);
+    bodyData.append("doctor", data.doctor);
+    bodyData.append("contact", data.contact);
+    return bodyData;
+  };
 
-    static startPayment = async (formData: FormData): Promise<string> => {
-        const user: User = new User();
-        const jwtToken: JwtCookie = user.getCookieJson();
-        const response = await axios({
-            url: this.baseUrl + "/krsp/order/start_payment/",
-            method: "POST",
-            data: formData,
-            headers: {
-                Accept: "application/json",
-                "content-Type": "application/json",
-                Authorization: `Bearer ${jwtToken.jwt}`,
-            },
-        });
-        return JSON.stringify(response.data);
+  static startPayment = async (formData: FormData): Promise<string> => {
+    const user: User = new User();
+    const jwtToken: JwtCookie = user.getCookieJson();
+    const config: Config = {
+      headers: {
+        Authorization: `Bearer ${jwtToken.jwt}`,
+      },
     };
+    const response = await axios.post(
+      axios.defaults.baseURL + "/krsp/order/start_payment/",
+      formData,
+      config
+    );
+    return JSON.stringify(response.data);
+  };
 
-    static getOptions = (
-        response: StartPaymentResponse,
-        handlePaymentSuccess: (response: StartPaymentResponse) => void
-    ): Options => {
-        const options = {
-            key: "rzp_test_8zqflSyFkDEX6n",
-            amount: parseInt(response.order.order_amount.replace("₹", "")) * 100,
-            order_id: response.payment.id,
-            currency: "INR",
-            name: response.order.order_user_name,
-            handler: function (response: StartPaymentResponse) {
-                handlePaymentSuccess(response);
-            },
-            prefill: {
-                name: response.order.order_user_name,
-                email: response.order.order_email,
-                contact: response.order.order_contact,
-            },
-        };
-        return options;
+  static getOptions = (
+    response: StartPaymentResponse,
+    handlePaymentSuccess: (response: StartPaymentResponse) => void
+  ): Options => {
+    const options = {
+      key: "rzp_test_8zqflSyFkDEX6n",
+      amount: parseInt(response.order.order_amount.replace("₹", "")) * 100,
+      order_id: response.payment.id,
+      currency: "INR",
+      name: response.order.order_user_name,
+      handler: function (response: StartPaymentResponse) {
+        handlePaymentSuccess(response);
+      },
+      prefill: {
+        name: response.order.order_user_name,
+        email: response.order.order_email,
+        contact: response.order.order_contact,
+      },
     };
+    return options;
+  };
 
-    static handlePaymentSuccess = async (
-        formData: FormData,
-        data: Data,
-        router: NextRouter
-    ): Promise<string> => {
-        const jwtToken: JwtCookie = new User().getCookieJson();
-        const config: Config = {
-            headers: {
-                Authorization: `Bearer ${jwtToken.jwt}`,
-            },
-        };
-        const response = await axios.post(
-            this.baseUrl + "/krsp/order/handle_payment_success/",
-            formData,
-            config
-        );
-        if (response.status === 401) {
-            alert("payment not done");
-            return response.data.error;
-        } else if (response.status === 200) {
-            Payment.sendEmail(router, data);
-        }
-        return JSON.stringify(response.data);
+  static handlePaymentSuccess = async (
+    formData: FormData,
+    data: Data,
+    router: NextRouter
+  ): Promise<string> => {
+    const jwtToken: JwtCookie = new User().getCookieJson();
+    const config: Config = {
+      headers: {
+        Authorization: `Bearer ${jwtToken.jwt}`,
+      },
     };
+    const response = await axios.post(this.baseUrl + "/krsp/order/handle_payment_success/", formData, config);
+    if (response.status === 401) {
+      alert("payment not done");
+      return response.data.error;
+    } else if (response.status === 200) {
+      Payment.sendEmail(router, data);
+    }
+    return JSON.stringify(response.data);
+  };
 
-    static sendEmail = async (router: NextRouter, data: Data) => {
-        var emailContenet = {
-            to_name: data.email,
-            from_name: "krsp",
-            message: "Thank You For choosing krsp",
-        };
-        try {
-            const response = await emailjs.send(
-                "service_egxiqir",
-                "template_flwdrrp",
-                emailContenet,
-                "zLmIanEcHUGX8V3gR"
-            );
-            alert("email is sent to your email id");
-            router.push("/MyAppointments");
-        } catch (error: any) {
-            throw Error("SOMETHING WENT WRONG");
-        }
+  static sendEmail = async (router: NextRouter, data: Data) => {
+    var emailContenet = {
+      to_name: data.email,
+      from_name: "krsp",
+      message: "Thank You For choosing krsp",
     };
+    try {
+      const response = await emailjs.send(
+        "service_egxiqir",
+        "template_flwdrrp",
+        emailContenet,
+        "zLmIanEcHUGX8V3gR"
+      );
+      alert("email is sent to your email id");
+      router.push("/MyAppointments");
+    } catch (error: any) {
+      throw Error("SOMETHING WENT WRONG");
+    }
+  };
 }
 
 // const handlePaymentSuccess = (response: StartPaymentResponse) => {
