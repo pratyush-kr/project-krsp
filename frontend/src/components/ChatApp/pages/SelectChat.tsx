@@ -5,6 +5,7 @@ import { UserContext } from "@/contexts/UserContext";
 import { People } from "@/types/People";
 import { PeopleContext } from "@/contexts/PeopleContext";
 import ChatOption from "../components/ChatOption";
+import styles from "@/styles/SelectChat.module.css";
 
 export const SelectChat = () => {
   const people: People = useContext(PeopleContext);
@@ -21,7 +22,7 @@ export const SelectChat = () => {
   return (
     <div>
       <SearchContainer setOptions={setOptions} options={options} />
-      <div>
+      <div className={styles.chatOptionContainer}>
         {rooms?.map((room, index) => (
           <ChatOption props={{}} option={room} index={index === 0 ? "zero" : "other"} />
         ))}

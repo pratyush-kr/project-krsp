@@ -1,162 +1,180 @@
 .chatApp {
-    position: fixed;
-    bottom: 2vh;
-    right: 2vh;
-    animation-duration: 0.5s;
-    animation-timing-function: ease-in-out;
-    z-index: 999;
-    background-color: #fff;
-    border-radius: 1rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    color: black;
+  position: fixed;
+  bottom: 2vh;
+  right: 2vh;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  z-index: 999;
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: black;
 }
 
 .chatApp h3 {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0;
-    padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  padding: 15px;
 }
 
 .chatApp .row {
-    border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .chatApp .messages {
-    flex-grow: 1;
-    overflow-y: scroll;
-    padding: 10px;
+  flex-grow: 1;
+  overflow-y: scroll;
+  padding: 10px;
 }
 
 .chatApp .chat {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    margin: auto;
-    height: 54vh;
-    overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: auto;
+  height: 54vh;
+  overflow-y: auto;
 }
 
 .chatApp .chatInput {
-    width: 100%;
-    padding: 0.2vh;
+  width: 100%;
+  padding: 0.2vh;
 }
 
 .chatApp .chatInputContainer {
-    bottom: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 90%;
-    margin: auto;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 90%;
+  margin: auto;
 }
 
 .chatApp .inputContainer {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background-color: #f5f5f5;
-    border-top: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #eee;
 }
 
 .openChat {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 9999;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
 }
 
 .openChat img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .openChat img:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .chatApp .row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .chat {
-    padding: 10px;
+  padding: 10px;
 }
 
 .chatMessage {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }
 
 .chatMessageReverse {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
 }
 
 .chatBubble {
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-    max-width: 70%;
-    text-align: left;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+  max-width: 70%;
+  text-align: left;
 }
 
 .chatBubbleSelf {
-    background-color: #dcf8c6;
+  background-color: #dcf8c6;
 }
 
 .chatBubbleOther {
-    background-color: #d6b5eb;
+  background-color: #d6b5eb;
 }
 
 .chatMessageHeader {
-    font-size: 0.8rem;
-    margin-bottom: 5px;
+  font-size: 0.8rem;
+  margin-bottom: 5px;
 }
 
 .chatMessageHeaderName {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .chatMessageHeaderTimestamp {
-    color: gray;
-    margin-left: 5px;
+  color: gray;
+  margin-left: 5px;
 }
 
 @keyframes slide-in {
-    from {
-        bottom: -100vh;
-    }
-    to {
-        bottom: 1vh;
-    }
+  from {
+    bottom: -100vh;
+  }
+  to {
+    bottom: 1vh;
+  }
 }
 
 @keyframes slide-out {
-    from {
-        bottom: 1vh;
-    }
-    to {
-        bottom: -100vh;
-    }
+  from {
+    bottom: 1vh;
+  }
+  to {
+    bottom: -100vh;
+  }
 }
 
 .ChatBtnContainer {
-    width: 100%;
-    margin: auto;
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 1vh;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1vh;
+}
+
+.chat::-webkit-scrollbar {
+  width: 10px; /* set the width of the scrollbar */
+}
+
+.chat::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* set the background color of the scrollbar track */
+}
+
+.chat::-webkit-scrollbar-thumb {
+  background-color: #888; /* set the color of the scrollbar thumb */
+  border-radius: 5px; /* round the corners of the scrollbar thumb */
+  border: 2px solid #f1f1f1; /* add a border to the scrollbar thumb */
+}
+
+.chat::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* set the color of the scrollbar thumb on hover */
 }

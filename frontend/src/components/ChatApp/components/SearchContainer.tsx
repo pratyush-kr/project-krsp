@@ -1,4 +1,4 @@
-import React, { FormEvent, SyntheticEvent, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { makeStyles } from "@mui/styles";
 import { InputAdornment, TextField, Autocomplete, Avatar } from "@mui/material";
@@ -10,7 +10,7 @@ import { UserContext } from "@/contexts/UserContext";
 import { JwtCookie } from "@/types/JwtCookie";
 import ChatOption from "./ChatOption";
 
-var index = 0;
+var index = -1;
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -98,24 +98,3 @@ export function SearchContainer(props: Props) {
     </div>
   );
 }
-
-/* <Autocomplete
-        sx={{ width: "15vw" }}
-        options={options}
-        // value={searchValue}
-        renderInput={(params) => (
-            <TextField
-                {...params}
-                label="Search"
-                InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon />
-                        </InputAdornment>
-                    ),
-                }}
-                type="submit"
-            />
-        )}
-    /> 
-*/
