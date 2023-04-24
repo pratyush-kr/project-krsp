@@ -1,0 +1,107 @@
+.body {
+  margin: auto;
+  height: 100vh;
+  background-color: white;
+  color: black;
+}
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  height: 80vh;
+  width: 80vw;
+  margin-top: 4vh;
+  border: 1px solid black;
+  border-radius: 3rem;
+}
+
+.box form {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.formDiv {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 25vw;
+}
+
+.box .btn {
+  margin: auto;
+  margin-top: 1vh;
+  width: 50%;
+}
+
+.box .input {
+  margin-bottom: 1vh;
+}
+
+.field .input {
+  margin-bottom: 1vh;
+}
+
+@media screen and (max-device-width: 480px) {
+  .body {
+    margin: auto;
+    height: 100vh !important;
+    width: 100vw !important;
+  }
+  .box {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    height: 70vh;
+    width: 95vw;
+    margin-top: 10vh;
+    border: 1px solid black;
+    border-radius: 3rem;
+  }
+
+  .box form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+  }
+
+  .box .formTextInputContainer {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-right: 2vw;
+  }
+  .box .formValueContainer {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+  }
+
+  .box .field {
+    margin: auto;
+    margin-left: 2vw;
+    display: none;
+    flex-direction: column;
+  }
+
+  .box .btn {
+    margin: auto;
+    margin-top: 1vh;
+    width: 50%;
+  }
+
+  .formTextInputContainer .input {
+    margin-bottom: 1vh;
+  }
+
+  .field .input {
+    margin-bottom: 1vh;
+  }
+}

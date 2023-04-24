@@ -1,0 +1,61 @@
+.body {
+  background-color: white;
+  color: black;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 3rem;
+  margin: auto;
+  margin-top: 4vh;
+  margin-bottom: 5vh;
+  height: 80vh;
+  width: 80vw;
+}
+
+.box .container {
+  margin: auto;
+  display: flex;
+  width: 20%;
+  flex-direction: column;
+  border: none;
+}
+
+.box .filler {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  margin-top: 2vh;
+  height: 5vh;
+}
+
+.box .input {
+  margin-top: 2vh;
+}
+
+.disableSelect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.watermark {
+  position: absolute;
+  opacity: 0.1;
+  rotate: -45deg;
+  margin-top: 33vh;
+  margin-left: 15vw;
+  font-size: 10vh;
+}
+
+.watermark.dark {
+  position: absolute;
+  opacity: 0.4;
+  rotate: -45deg;
+  margin-top: 33vh;
+  margin-left: 15vw;
+  font-size: 10vh;
+}
