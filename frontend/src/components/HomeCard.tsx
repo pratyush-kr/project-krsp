@@ -13,7 +13,7 @@ const HomeCard: React.FC<HomeCardProps> = (props) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     localStorage.setItem("page_name", props.name);
-    router.push("/know_more");
+    router.push("/KnowMore");
   };
   return (
     <div className={styles.homeCards}>

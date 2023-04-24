@@ -1,4 +1,8 @@
 .navbar {
-    color: black;
-    width: 100vw;
+  color: black;
+  width: 100vw;
+}
+
+.link {
+  margin: 1vh;
 }

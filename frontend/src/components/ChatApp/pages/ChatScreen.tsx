@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { People } from "@/types/People";
 import { PeopleContext } from "@/contexts/PeopleContext";
 import { Rooms } from "@/models/ChatRoom";
-import io, { Socket } from "socket.io-client";
+// import io, { Socket } from "socket.io-client";
 import { Token } from "@mui/icons-material";
 import { User } from "@/models/User";
 
@@ -20,7 +20,7 @@ const ChatScreen = () => {
   const [message, setMessage] = useState("");
   const [data, setData] = useState([{ name: "", message: "", date: "", time: "" }]);
   const userContext = useContext(UserContext);
-  const [socket, setSocket] = useState<Socket | null>(null);
+  // const [socket, setSocket] = useState<Socket | null>(null);
   const sendMessage = async () => {
     if (people.name === "Assistant") {
       const response = await Rooms.chatWithBot(message, people, setMessage, setData, userContext);
@@ -66,17 +66,17 @@ const ChatScreen = () => {
     }
   }, [open, data]);
 
-  useEffect(() => {
-    const newSocket = io("http://localhost:8000", {
-      extraHeaders: {
-        Authorization: `Bearer ${new User().getCookieJson().jwt}`,
-      },
-    });
-    setSocket(newSocket);
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const newSocket = io("http://localhost:8000", {
+  //     extraHeaders: {
+  //       Authorization: `Bearer ${new User().getCookieJson().jwt}`,
+  //     },
+  //   });
+  //   setSocket(newSocket);
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);
   return (
     <div>
       <div className={styles.chat} ref={chatContainerRef}>

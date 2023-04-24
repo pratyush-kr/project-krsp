@@ -1,0 +1,97 @@
+.body {
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(
+    76.12deg,
+    #36004e 0.71%,
+    rgba(40, 10, 103, 0.0973005) 178.35%,
+    rgba(39, 10, 101, 0) 178.92%
+  );
+  display: flex;
+  flex-direction: row;
+  color: black;
+}
+
+.box {
+  width: 95vw;
+  height: 95vh;
+  border-radius: 30px;
+  margin-right: auto;
+  margin-top: 2.5vh;
+  background-color: white;
+  display: flex;
+}
+
+.shortcuts {
+  margin: auto;
+  margin-top: 2.5vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shortcuts svg {
+  margin-top: 2.5vh;
+}
+
+.shortcuts .settingsIcon {
+  position: absolute;
+  margin: auto;
+  bottom: 5vh;
+}
+
+.section.details {
+  margin-left: 5vw;
+  margin-top: 8vh;
+  width: 35vw;
+}
+
+.section.todo {
+  margin: auto;
+  width: 60vw;
+}
+.profilePic {
+  width: 8vw;
+  height: 15vh;
+  border-radius: 1vw;
+}
+.text.details {
+  margin-top: 0vh;
+  text-align: left;
+}
+
+.text span {
+  margin-left: 2vw;
+  text-align: right;
+  text-decoration: none;
+}
+
+.profile a {
+  margin-left: 2vw;
+  text-align: right;
+  text-decoration: none;
+}
+
+.appointment.card {
+  height: 20vh;
+  width: 25vw;
+  background: linear-gradient(
+    94.48deg,
+    #05f305e7 0.87%,
+    rgba(217, 217, 217, 0) 163.16%,
+    rgba(219, 201, 201, 0.0837409) 163.17%,
+    rgba(255, 0, 0, 0.5) 163.19%
+  );
+  border-radius: 1vw;
+  text-align: center;
+  padding: 1vh;
+}
+
+.textInput {
+  margin: auto;
+  margin-top: 1vh !important;
+}
+
+.name {
+  height: 10vh;
+  font-size: 4vh;
+}
