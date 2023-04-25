@@ -56,7 +56,7 @@ export const Header = () => {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
-              className="disable-select"
+              className={styles.disableSelect}
               variant="h6"
               noWrap
               sx={{
@@ -112,7 +112,7 @@ export const Header = () => {
               </Menu>
             </Box>
             <Typography
-              className="disable-select"
+              className={styles.disableSelect}
               variant="h5"
               noWrap
               component="a"
