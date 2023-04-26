@@ -1,0 +1,84 @@
+.body {
+  background-color: white;
+}
+.page {
+  text-align: center;
+  height: 80vh;
+  position: relative;
+}
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+  height: 70vh;
+  margin: auto;
+  margin-top: 10vh;
+  border: calc(0.1vh + 0.05vw) solid gray;
+  border-radius: 3rem;
+}
+
+.form span {
+  margin-top: 2vh;
+  font-size: calc(4vh);
+  font-weight: bold;
+}
+
+.form form {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 40%;
+}
+
+.accountOptions {
+  display: flex;
+  flex-direction: row;
+}
+
+.accountOptions .forgot {
+  position: relative;
+  width: 50%;
+}
+
+.accountOptions a {
+  text-decoration: none;
+  color: blue;
+  text-align: right;
+}
+
+@media screen and (max-device-width: 480px) {
+  .page {
+    text-align: center;
+    /* color: white; */
+    height: 80vh;
+    position: relative;
+  }
+  .form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    height: 70vh;
+    margin: auto;
+    margin-top: 12vh;
+    border: calc(0.1vh + 0.05vw) solid gray;
+    border-radius: 3rem;
+  }
+
+  .form span {
+    margin-top: 2vh;
+    font-weight: bold;
+  }
+
+  .form form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 80%;
+  }
+  .accountOptions .forgot {
+    /* position: relative; */
+    right: -20.5vw;
+  }
+}

@@ -1,0 +1,19 @@
+.body {
+  margin: auto;
+  margin-top: 2vh;
+  margin-bottom: 3vh;
+  border: 1px solid black;
+  width: 95vw;
+  height: 86vh;
+  border-radius: 2rem;
+  color: black;
+}
+
+.members {
+  display: flex;
+  margin: auto;
+  margin-top: 2vh;
+  height: 80vh;
+  width: 96%;
+  flex-direction: row;
+}

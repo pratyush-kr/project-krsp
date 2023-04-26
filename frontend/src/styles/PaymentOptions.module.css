@@ -1,0 +1,122 @@
+.page {
+    background-color: white;
+}
+.body {
+    height: 85vh;
+    /* width: 100vw; */
+}
+
+.box {
+    position: relative;
+    margin: auto;
+    margin-top: 4vh;
+    display: flex;
+    border: 1px solid black;
+    height: 80vh;
+    width: 65vw;
+    border-radius: 3rem;
+    flex-direction: column;
+}
+
+.box span {
+    /* margin: auto; */
+    margin-top: 2vh;
+    font-weight: bold;
+    font-size: 3vh;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16vh;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+.btn {
+    margin: auto;
+    margin-top: 1.5vh;
+}
+.card a {
+    margin: auto;
+}
+
+.card img {
+    height: 35vh;
+    width: 20vw;
+    border-radius: 1rem;
+}
+
+@media screen and (max-device-width: 480px) {
+    .body {
+        height: 120vh;
+        width: 100vw;
+    }
+
+    .box {
+        position: relative;
+        margin: auto;
+        margin-top: 10vh;
+        display: flex;
+        border: 1px solid black;
+        height: 110vh;
+        width: 95vw;
+        border-radius: 3rem;
+        flex-direction: column;
+    }
+
+    .btn {
+        margin: auto;
+    }
+
+    .box span {
+        margin-top: 2vh;
+        font-weight: bold;
+        font-size: 3vh;
+    }
+
+    .box .options {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card {
+        margin: auto;
+        width: 95%;
+        /* margin-bottom: 7vh; */
+    }
+    .card img {
+        height: 35vh;
+        width: 80vw;
+        margin: auto;
+    }
+
+    .forms {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 90vw;
+        height: 70vh;
+        margin: auto;
+        margin-top: 12vh;
+        border: calc(0.1vh + 0.05vw) solid gray;
+        border-radius: 3rem;
+    }
+}
+
+.forms {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 80%;
+}
+
+.part {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}

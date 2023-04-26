@@ -1,0 +1,16 @@
+.body {
+  background-color: white;
+  color: black;
+}
+
+.Tnc .container {
+  border: 1px solid black;
+  margin: 5%;
+  padding: 5%;
+  text-align: left;
+  border-radius: 3rem;
+}
+.Tnc .hd {
+  text-align: center;
+  padding-bottom: 5%;
+}

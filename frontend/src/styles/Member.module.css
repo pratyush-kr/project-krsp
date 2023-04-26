@@ -1,0 +1,41 @@
+.member {
+  padding: 1vh;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  background-color: #e0e5ec;
+  box-shadow: 6px 6px 12px #c1c9d1, -6px -6px 12px #fcffff;
+  border-radius: 2rem;
+  height: 100%;
+  width: 25vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.member p {
+  margin: auto;
+}
+
+.member img {
+  border-radius: 15rem;
+  width: 10vw;
+  height: 21vh;
+  margin: auto;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.icons .container {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  border: none;
+}
+
+.container a {
+  margin: 1vh;
+}

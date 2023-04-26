@@ -1,0 +1,40 @@
+.body {
+  background-color: white;
+  color: black;
+}
+
+.App {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  background-color: #006699;
+  color: white;
+  padding: 10px;
+}
+
+.h1 {
+  margin: 0;
+}
+
+.h2 {
+  color: #006699;
+}
+
+.ul {
+  list-style: disc;
+  margin-left: 20px;
+}
+
+.a {
+  color: #006699;
+}
+
+.footer {
+  background-color: #dcdcdc;
+  padding: 10px;
+  text-align: center;
+}

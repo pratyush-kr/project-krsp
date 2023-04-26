@@ -1,0 +1,15 @@
+.navbar {
+  color: black;
+  width: 100vw;
+}
+
+.link {
+  margin: 1vh;
+}
+
+.disableSelect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

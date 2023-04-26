@@ -1,0 +1,83 @@
+.input {
+  background-color: white;
+  color: black;
+}
+
+.searchButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.searchButton:hover::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: -1;
+  transition: all 0.4s ease-in-out;
+}
+
+.searchButton:hover::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: -1;
+  transition: all 0.4s ease-in-out;
+}
+
+.searchButton:hover::before {
+  transform: translate(-50%, -50%) scale(2);
+}
+
+.searchButton:hover::after {
+  transform: translate(-50%, -50%) scale(3);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1vh;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.chat {
+  color: #a9a9a9;
+}
+
+.room {
+  display: flex;
+  flex-direction: row;
+  padding: 1vh;
+  padding-left: 3vh;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  user-select: none;
+}
+
+.zero {
+  margin-top: 1vh;
+  border-bottom: 0px solid #eee;
+}
+
+.other {
+  border-bottom: 0px solid #eee;
+}
