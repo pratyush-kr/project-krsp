@@ -34,3 +34,10 @@ frontend/.vercel
 # typescript
 frontend/*.tsbuildinfo
 frontend/next-env.d.ts
+
+# backend django
+backend/.idea/
+backend/krsp/__pycache__/
+backend/krsp/views/__pycache__/
+backend/krsp/models/__pycache__/
+backend/backend/__pycache__/
