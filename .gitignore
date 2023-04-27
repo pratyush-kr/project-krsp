@@ -41,3 +41,4 @@ backend/krsp/__pycache__/
 backend/krsp/views/__pycache__/
 backend/krsp/models/__pycache__/
 backend/backend/__pycache__/
+backend/krsp/migrations/__pycache__/
