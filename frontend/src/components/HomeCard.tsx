@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import { Button } from "@mui/material";
 import styles from "@/styles/HomeCard.module.css";
+import Link from "next/link";
+import KnowMore from "@/pages/KnowMore";
 interface HomeCardProps {
   name: string;
   imgUrl: string;
@@ -29,9 +31,9 @@ const HomeCard: React.FC<HomeCardProps> = (props) => {
         }}
         className={styles.homeCard}
       >
-        <a href="#!">
+        <Link href="/KnowMore" onClick={handleClick}>
           <img className={styles.img} src={props.imgUrl} alt="" />
-        </a>
+        </Link>
         <div className={styles.knowMoreBtnContainer}>
           <motion.div
             whileHover={{
