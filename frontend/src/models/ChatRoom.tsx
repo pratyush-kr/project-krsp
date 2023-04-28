@@ -7,7 +7,6 @@ import { JwtCookie } from "@/types/JwtCookie";
 import { People } from "@/types/People";
 import React from "react";
 import router from "next/router";
-import io from "socket.io-client";
 
 interface Data {
   name: string;
@@ -108,7 +107,8 @@ export class Rooms {
     openChatWith: People,
     setMessage: React.Dispatch<React.SetStateAction<string>>,
     setData: React.Dispatch<React.SetStateAction<Data[]>>,
-    userContext: UserType
+    userContext: UserType,
+    socket: WebSocket | null
   ) => {
     const date = new Date();
     const new_message = {
@@ -119,29 +119,24 @@ export class Rooms {
       name: "You",
     };
     setMessage((prevMessage: string) => "");
-    setData((data) => {
-      return [...data, new_message];
-    });
     const user: User = new User();
     const validToken: boolean = await user.verifyToken();
     if (!validToken) {
       userContext.logout();
       localStorage.removeItem("user_info");
+      return;
     }
     const jwtCookie: JwtCookie = user.getCookieJson();
-    const config = {
+    const config: Config = {
       headers: {
         Authorization: `Bearer ${jwtCookie.jwt}`,
       },
     };
     try {
-      const response = await axios.post(
-        axios.defaults.baseURL + "/krsp/chat/send_message/",
-        new_message,
-        config
-      );
-      setData((data) => [...data, response.data]);
+      await axios.post(axios.defaults.baseURL + "/krsp/chat/send_message/", new_message, config);
+      socket?.send(JSON.stringify({ ...new_message, token: jwtCookie.jwt }));
     } catch (err: any) {
+      console.log(err);
       if (err.response?.status === 401) {
         userContext.logout();
         localStorage.removeItem("user_info");

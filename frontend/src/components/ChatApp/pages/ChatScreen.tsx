@@ -9,23 +9,22 @@ import { useRouter } from "next/router";
 import { People } from "@/types/People";
 import { PeopleContext } from "@/contexts/PeopleContext";
 import { Rooms } from "@/models/ChatRoom";
-// import io, { Socket } from "socket.io-client";
-import { Token } from "@mui/icons-material";
-import { User } from "@/models/User";
 
 const ChatScreen = () => {
   const people: People = useContext(PeopleContext);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
   const router = useRouter();
   const chatContainerRef = useRef<null | HTMLDivElement>(null);
   const [message, setMessage] = useState("");
   const [data, setData] = useState([{ name: "", message: "", date: "", time: "" }]);
+  const [newMessage, setNewMessage] = useState({ name: "", message: "" });
   const userContext = useContext(UserContext);
-  // const [socket, setSocket] = useState<Socket | null>(null);
+
   const sendMessage = async () => {
     if (people.name === "Assistant") {
       const response = await Rooms.chatWithBot(message, people, setMessage, setData, userContext);
     } else {
-      const response = await Rooms.sendMessage(message, people, setMessage, setData, userContext);
+      const response = await Rooms.sendMessage(message, people, setMessage, setData, userContext, socket);
     }
   };
 
@@ -66,17 +65,38 @@ const ChatScreen = () => {
     }
   }, [open, data]);
 
-  // useEffect(() => {
-  //   const newSocket = io("http://localhost:8000", {
-  //     extraHeaders: {
-  //       Authorization: `Bearer ${new User().getCookieJson().jwt}`,
-  //     },
-  //   });
-  //   setSocket(newSocket);
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, []);
+  useEffect(() => {
+    const chatSocket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${people.room_id}`);
+    chatSocket.onopen = (e) => {
+      console.log("The connection was setup successfully !");
+    };
+
+    // Listen for messages
+    chatSocket.addEventListener("message", (event) => {
+      const newMessage = JSON.parse(event.data);
+      const date = new Date();
+      setData((data) => {
+        return [
+          ...data,
+          {
+            message: newMessage.message,
+            room_id: people.room_id,
+            date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+            time: `${date.getHours()}:${date.getMinutes()}`,
+            name: newMessage.name === userContext.name ? "You" : newMessage.name,
+          },
+        ];
+      });
+    });
+
+    setSocket(chatSocket);
+
+    // Cleanup
+    return () => {
+      chatSocket.close();
+    };
+  }, []);
+
   return (
     <div>
       <div className={styles.chat} ref={chatContainerRef}>
@@ -103,32 +123,40 @@ const ChatScreen = () => {
         ))}
       </div>
       <div className={styles.chatInputContainer}>
-        <TextField
-          placeholder="Type a message.."
-          className={styles.chatInput}
-          multiline
-          rows="1"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(event: React.KeyboardEvent) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-              sendMessage();
-            } else if (event.key === "Enter" && event.shiftKey) {
-              event.preventDefault();
-              const target = event.target as HTMLInputElement;
-              const cursorPosition: number | null = target.selectionStart;
-              if (cursorPosition !== null) {
-                setMessage(
-                  (prevMessage) =>
-                    prevMessage.slice(0, cursorPosition) + "\n" + prevMessage.slice(cursorPosition)
-                );
-              }
-            }
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage();
           }}
-        />
-        <Button variant="contained" sx={{ marginLeft: "1vh" }} onClick={sendMessage}>
-          Send
-        </Button>
+          className={styles.chatInputContainer}
+        >
+          <TextField
+            placeholder="Type a message.."
+            className={styles.chatInput}
+            multiline
+            rows="2"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(event: React.KeyboardEvent) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                sendMessage();
+              } else if (event.key === "Enter" && event.shiftKey) {
+                event.preventDefault();
+                const target = event.target as HTMLInputElement;
+                const cursorPosition: number | null = target.selectionStart;
+                if (cursorPosition !== null) {
+                  setMessage(
+                    (prevMessage) =>
+                      prevMessage.slice(0, cursorPosition) + "\n" + prevMessage.slice(cursorPosition)
+                  );
+                }
+              }
+            }}
+          />
+          <Button variant="contained" sx={{ marginLeft: "1vh" }} type="submit">
+            Send
+          </Button>
+        </form>
       </div>
     </div>
   );

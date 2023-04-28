@@ -72,15 +72,6 @@ class ChatView(viewsets.ModelViewSet):
         message = request.data['message']
         room_id = request.data['room_id']
         Chat.objects.create(fk_user_id=user.id, message=message, fk_room_id=room_id)
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(
-            f'room_{room_id}',
-            {
-                'type': 'chat.message',
-                'message': message,
-                'username': user.username
-            }
-        )
         return Response(status=status.HTTP_200_OK)
 
     @action(methods=["POST"], detail=False)

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@mui/material";
 import styles from "@/styles/HomeCard.module.css";
 import Link from "next/link";
-import KnowMore from "@/pages/KnowMore";
+
 interface HomeCardProps {
   name: string;
   imgUrl: string;
