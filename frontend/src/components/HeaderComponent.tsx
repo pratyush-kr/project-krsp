@@ -51,7 +51,7 @@ export const Header = () => {
     }
   }, [userContext.isAuthenticated]);
   return (
-    <div style={{ width: "100%", margin: "0", padding: "0" }}>
+    <div style={{ margin: "0", padding: "0" }}>
       <AppBar position="fixed" style={{ backgroundColor: "#FF007F", position: "relative" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>

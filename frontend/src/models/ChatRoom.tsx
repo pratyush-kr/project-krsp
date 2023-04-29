@@ -57,7 +57,6 @@ export class Rooms {
   static chatWithBot = async (
     message: string,
     openChatWith: People,
-    setMessage: React.Dispatch<React.SetStateAction<string>>,
     setData: React.Dispatch<React.SetStateAction<Data[]>>,
     userContext: UserType
   ) => {
@@ -69,7 +68,6 @@ export class Rooms {
       time: `${date.getHours()}:${date.getMinutes()}`,
       name: "You",
     };
-    setMessage((prevMessage: string) => "");
     setData((data) => {
       return [...data, new_message];
     });
@@ -105,8 +103,6 @@ export class Rooms {
   static sendMessage = async (
     message: string,
     openChatWith: People,
-    setMessage: React.Dispatch<React.SetStateAction<string>>,
-    setData: React.Dispatch<React.SetStateAction<Data[]>>,
     userContext: UserType,
     socket: WebSocket | null
   ) => {
@@ -118,7 +114,7 @@ export class Rooms {
       time: `${date.getHours()}:${date.getMinutes()}`,
       name: "You",
     };
-    setMessage((prevMessage: string) => "");
+    console.log(new_message.message);
     const user: User = new User();
     const validToken: boolean = await user.verifyToken();
     if (!validToken) {

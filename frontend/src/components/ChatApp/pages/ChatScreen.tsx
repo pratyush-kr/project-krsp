@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "@/styles/ChatApp.module.css";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, TextareaAutosize } from "@mui/material";
 import { JwtCookie } from "@/types/JwtCookie";
 import axios from "axios";
 import { UserContext } from "@/contexts/UserContext";
@@ -15,19 +15,23 @@ const ChatScreen = () => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const router = useRouter();
   const chatContainerRef = useRef<null | HTMLDivElement>(null);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string>("");
   const [data, setData] = useState([{ name: "", message: "", date: "", time: "" }]);
-  const [newMessage, setNewMessage] = useState({ name: "", message: "" });
   const userContext = useContext(UserContext);
 
   const sendMessage = async () => {
-    if (people.name === "Assistant") {
-      const response = await Rooms.chatWithBot(message, people, setMessage, setData, userContext);
-    } else {
-      const response = await Rooms.sendMessage(message, people, setMessage, setData, userContext, socket);
+    if (message !== null) {
+      if (people.name === "Assistant") {
+        const response = await Rooms.chatWithBot(message, people, setData, userContext);
+      } else {
+        const response = await Rooms.sendMessage(message, people, userContext, socket);
+      }
     }
+    setMessage("");
   };
-
+  useEffect(() => {
+    console.log(message);
+  }, [message]);
   useEffect(() => {
     const cookie: string | null = localStorage.getItem("user_info");
     if (cookie === null) {
@@ -117,7 +121,12 @@ const ChatScreen = () => {
                   </>
                 )}
               </div>
-              <div className={styles.chatMessageBody}>{msgData.message}</div>
+              {msgData.message.split("\n").map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
             </div>
           </div>
         ))}
@@ -130,28 +139,12 @@ const ChatScreen = () => {
           }}
           className={styles.chatInputContainer}
         >
-          <TextField
+          <TextareaAutosize
             placeholder="Type a message.."
             className={styles.chatInput}
-            multiline
-            rows="2"
-            value={message}
+            minRows={3}
+            value={message as string}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(event: React.KeyboardEvent) => {
-              if (event.key === "Enter" && !event.shiftKey) {
-                sendMessage();
-              } else if (event.key === "Enter" && event.shiftKey) {
-                event.preventDefault();
-                const target = event.target as HTMLInputElement;
-                const cursorPosition: number | null = target.selectionStart;
-                if (cursorPosition !== null) {
-                  setMessage(
-                    (prevMessage) =>
-                      prevMessage.slice(0, cursorPosition) + "\n" + prevMessage.slice(cursorPosition)
-                  );
-                }
-              }
-            }}
           />
           <Button variant="contained" sx={{ marginLeft: "1vh" }} type="submit">
             Send

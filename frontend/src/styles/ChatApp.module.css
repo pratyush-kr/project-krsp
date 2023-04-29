@@ -36,13 +36,14 @@
   flex-direction: column;
   width: 90%;
   margin: auto;
-  height: 54vh;
+  height: 60vh;
   overflow-y: auto;
 }
 
 .chatApp .chatInput {
   width: 100%;
   padding: 0.2vh;
+  resize: none;
 }
 
 .chatApp .chatInputContainer {

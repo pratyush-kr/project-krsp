@@ -22,7 +22,7 @@ const ProfileIcon = ({ settings }: Props) => {
     setAnchorElUser(event.currentTarget);
   };
   return (
-    <Box sx={{ flexGrow: 0 }}>
+    <Box sx={{ flexGrow: 0, display: "flex", justifyContent: "center" }}>
       <Tooltip title="Your Profile">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <SvgIcon fontSize="large">

@@ -12,8 +12,12 @@ export const SelectChat = () => {
   const [options, setOptions] = useState<People[]>([]);
   useEffect(() => {
     const loader = async () => {
-      const rooms = await Rooms.loadRooms(userContext);
-      setRooms(rooms);
+      try {
+        const rooms = await Rooms.loadRooms(userContext);
+        setRooms(rooms);
+      } catch (err) {
+        console.log("something went wrong");
+      }
     };
     loader();
   }, []);
