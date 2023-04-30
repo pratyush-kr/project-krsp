@@ -120,7 +120,7 @@ const Login = () => {
           </form>
         </motion.div>
         {msg !== "" && <p style={{ color: "red" }}>{msg}</p>}
-        {loading ? (
+        {loading && (
           <div
             style={{
               zIndex: "10000",
@@ -132,8 +132,6 @@ const Login = () => {
           >
             <FadeLoading />
           </div>
-        ) : (
-          ""
         )}
       </div>
       <Footer />

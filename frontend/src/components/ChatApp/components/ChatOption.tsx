@@ -15,7 +15,6 @@ interface Props {
 const ChatOption: React.FC<Props> = ({ option, props, index }) => {
   const people: People = useContext(PeopleContext);
   const startChat = async () => {
-    console.log(option);
     if (option.room_id === null) {
       const room_id = await Rooms.createRoom(option);
       people.setPeople({ ...option, room_id: room_id });
