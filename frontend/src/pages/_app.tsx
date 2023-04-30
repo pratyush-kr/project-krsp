@@ -21,7 +21,6 @@ export default function App({ Component, pageProps }: AppProps) {
     userContext.setUsername(jwtCookie.name);
     userContext.login();
   }, []);
-  console.log(userContext);
   return (
     <UserContextProvider>
       <SchemeContextProvider>

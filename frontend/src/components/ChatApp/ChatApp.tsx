@@ -41,14 +41,12 @@ const ChatApp = () => {
     if (!people.peopleSelected) {
       return <SelectChat />;
     } else {
-      console.log("Rendering chatScreen");
       return <ChatScreen />;
     }
   };
   useEffect(() => {
     setRenderScreen(renderChats());
   }, [people.peopleSelected]);
-  console.log(renderScreen);
   return (
     <div
       className={`${styles.chatApp} ${open ? styles.show : styles.hiding}`}

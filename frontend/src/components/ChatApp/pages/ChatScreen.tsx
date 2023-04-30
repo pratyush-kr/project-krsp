@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "@/styles/ChatApp.module.css";
-import { Button, TextField, TextareaAutosize } from "@mui/material";
-import { JwtCookie } from "@/types/JwtCookie";
-import axios from "axios";
+import { Button, TextareaAutosize } from "@mui/material";
 import { UserContext } from "@/contexts/UserContext";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
@@ -13,16 +11,15 @@ import { Rooms } from "@/models/ChatRoom";
 const ChatScreen = () => {
   const people: People = useContext(PeopleContext);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const router = useRouter();
   const chatContainerRef = useRef<null | HTMLDivElement>(null);
   const [message, setMessage] = useState<string>("");
   const [data, setData] = useState([{ name: "", message: "", date: "", time: "" }]);
   const userContext = useContext(UserContext);
 
   const sendMessage = async () => {
-    if (message !== null) {
+    if (message !== "") {
       if (people.name === "Assistant") {
-        const response = await Rooms.chatWithBot(message, people, setData, userContext);
+        const response = Rooms.chatWithBot(message, people, setData, userContext);
       } else {
         const response = await Rooms.sendMessage(message, people, userContext, socket);
       }
@@ -30,37 +27,7 @@ const ChatScreen = () => {
     setMessage("");
   };
   useEffect(() => {
-    console.log(message);
-  }, [message]);
-  useEffect(() => {
-    const cookie: string | null = localStorage.getItem("user_info");
-    if (cookie === null) {
-      return;
-    }
-    const jwt_cookie: JwtCookie = JSON.parse(cookie);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${jwt_cookie.jwt}`,
-      },
-    };
-    axios
-      .post(axios.defaults.baseURL + "/krsp/chat/load_chats/", { room_id: people.room_id }, config)
-      .then((res) => {
-        setData(res.data);
-      })
-      .then(() => {
-        if (chatContainerRef !== null && chatContainerRef.current !== null) {
-          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
-      })
-      .catch((err: AxiosError) => {
-        if (err.response?.status === 401) {
-          userContext.logout();
-          localStorage.removeItem("user_info");
-          sessionStorage.removeItem("guest_info");
-          router.push("/Login");
-        }
-      });
+    Rooms.loadChats(people, setData, chatContainerRef, userContext);
   }, [open]);
 
   useEffect(() => {
@@ -74,8 +41,6 @@ const ChatScreen = () => {
     chatSocket.onopen = (e) => {
       console.log("The connection was setup successfully !");
     };
-
-    // Listen for messages
     chatSocket.addEventListener("message", (event) => {
       const newMessage = JSON.parse(event.data);
       const date = new Date();
@@ -92,10 +57,7 @@ const ChatScreen = () => {
         ];
       });
     });
-
     setSocket(chatSocket);
-
-    // Cleanup
     return () => {
       chatSocket.close();
     };
@@ -143,7 +105,7 @@ const ChatScreen = () => {
             placeholder="Type a message.."
             className={styles.chatInput}
             minRows={3}
-            value={message as string}
+            value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
           <Button variant="contained" sx={{ marginLeft: "1vh" }} type="submit">

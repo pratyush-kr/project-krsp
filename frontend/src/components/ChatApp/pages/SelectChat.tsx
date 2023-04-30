@@ -26,7 +26,7 @@ export const SelectChat = () => {
       <SearchContainer setOptions={setOptions} options={options} />
       <div className={styles.chatOptionContainer}>
         {rooms?.map((room, index) => (
-          <ChatOption props={{}} option={room} index={index === 0 ? "zero" : "other"} />
+          <ChatOption props={{}} key={index} option={room} index={index === 0 ? "zero" : "other"} />
         ))}
       </div>
     </div>

@@ -1,6 +1,5 @@
-import { Room as RoomType } from "@/types/ChatRoom";
 import { Config } from "@/types/Config";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { User } from "./User";
 import { User as UserType } from "@/types/User";
 import { JwtCookie } from "@/types/JwtCookie";
@@ -32,7 +31,6 @@ export class Rooms {
       },
     };
     const response = await axios.post(axios.defaults.baseURL + "/krsp/chat/load_rooms/", {}, config);
-    console.log(response.data);
     rooms = response.data;
     return rooms;
   };
@@ -134,6 +132,46 @@ export class Rooms {
     } catch (err: any) {
       console.log(err);
       if (err.response?.status === 401) {
+        userContext.logout();
+        localStorage.removeItem("user_info");
+        sessionStorage.removeItem("guest_info");
+        router.push("/Login");
+      }
+    }
+  };
+
+  static loadChats = async (
+    people: People,
+    setData: (value: any) => void,
+    chatContainerRef: React.MutableRefObject<HTMLDivElement | null>,
+    userContext: UserType
+  ) => {
+    const user: User = new User();
+    const validToken: boolean = await user.verifyToken();
+    if (!validToken) {
+      router.push("/Login");
+      user.getAndSaveGuestToken();
+      user.logout();
+      return;
+    }
+    const cookie = user.getCookieJson();
+    const config: Config = {
+      headers: {
+        Authorization: `Bearer ${cookie.jwt}`,
+      },
+    };
+    try {
+      const response = await axios.post(
+        axios.defaults.baseURL + "/krsp/chat/load_chats/",
+        { room_id: people.room_id },
+        config
+      );
+      await setData(response.data);
+      if (chatContainerRef !== null && chatContainerRef.current !== null) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
+    } catch (error: any) {
+      if (error.response?.status === 401) {
         userContext.logout();
         localStorage.removeItem("user_info");
         sessionStorage.removeItem("guest_info");
