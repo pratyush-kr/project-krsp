@@ -38,7 +38,7 @@ class ChatView(viewsets.ModelViewSet):
             data += [{
                 'user_id': user.id,
                 'name': user.name,
-                'last_message': chat.message if chat else "Start a chat...",
+                'last_message': chat.message if chat else "Start a chat",
                 "profile_picture": user.profile_picture.url if user.profile_picture else None,
                 "room_id": chat.fk_room_id if chat else None
             }]

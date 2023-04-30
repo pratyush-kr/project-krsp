@@ -25,12 +25,17 @@ const ChatOption: React.FC<Props> = ({ option, props, index }) => {
       people.setPeople(option);
     }
   };
+  const getShortMessage = (message: string) => {
+    let shortMessage = message.slice(0, 40);
+    shortMessage += message === shortMessage ? "" : "...";
+    return shortMessage;
+  };
   return (
     <li {...props} className={`${styles.room} ${styles[index]}`} onClick={startChat}>
       <Avatar src={axios.defaults.baseURL + option.profile_picture} alt={option.name} />
       <div className={styles.text}>
         <span className={styles.name}>{option.name}</span>
-        <span className={styles.chat}>{option.last_message?.slice(0, 40) + "..."}</span>
+        <span className={styles.chat}>{getShortMessage(option.last_message)}</span>
       </div>
     </li>
   );
