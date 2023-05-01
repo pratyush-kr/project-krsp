@@ -12,11 +12,10 @@ import StarRatings from "react-star-ratings";
 import { UserContext } from "@/contexts/UserContext";
 import { useContext } from "react";
 import styles from "@/styles/Doctors.module.css";
-import { useRouter } from "next/router";
 import { User } from "@/models/User";
 import { Doctor } from "@/models/Doctor";
 import { motion } from "framer-motion";
-import { ClipLoading, FadeLoading } from "@/components/Spinners";
+import { ClipLoading } from "@/components/Spinners";
 
 function Doctors() {
   const [openDialog, setOpenDialog] = useState(false);

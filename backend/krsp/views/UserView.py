@@ -3,7 +3,6 @@ from django.contrib.auth.hashers import make_password
 from django.core.mail import EmailMultiAlternatives
 from django.utils.datastructures import MultiValueDictKeyError
 from rest_framework import viewsets, status
-from rest_framework.authentication import get_authorization_header
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -24,17 +23,17 @@ class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
-    @action(methods=["GET"], detail=False, permission_classes=[AllowAny])
-    def verify(self, request):
-        token = get_authorization_header(request).decode().split(" ")[1]
-        # user = User.objects.filter(name="Guest User").first()
-        # refresh_token = RefreshToken.for_user(user)
-        # access_token = refresh_token.access_token
-        # token = str(access_token)
-        auth = JWTAuthentication()
-        user, _ = auth.authenticate(request)
-        print(user.name)
-        return Response({"data": token}, status=status.HTTP_200_OK)
+    # @action(methods=["GET"], detail=False, permission_classes=[AllowAny])
+    # def verify(self, request):
+    #     token = get_authorization_header(request).decode().split(" ")[1]
+    #     # user = User.objects.filter(name="Guest User").first()
+    #     # refresh_token = RefreshToken.for_user(user)
+    #     # access_token = refresh_token.access_token
+    #     # token = str(access_token)
+    #     auth = JWTAuthentication()
+    #     user, _ = auth.authenticate(request)
+    #     print(user.name)
+    #     return Response({"data": token}, status=status.HTTP_200_OK)
 
     @action(methods=["GET", "POST"], detail=False)
     def get_user(self, request):
@@ -72,11 +71,11 @@ class UserView(viewsets.ModelViewSet):
                          'profile_picture': user.profile_picture.url, 'is_doctor': user.is_doctor}
         return response
 
-    @action(methods=["POST"], detail=False)
-    def check_token(self, request):
-        token = request.COOKIES.get('jwt')
-        user = get_user_from_request(token)
-        return Response({'email': user.email, 'id': user.id, 'name': user.name})
+    # @action(methods=["POST"], detail=False)
+    # def check_token(self, request):
+    #     token = request.COOKIES.get('jwt')
+    #     user = get_user_from_request(token)
+    #     return Response({'email': user.email, 'id': user.id, 'name': user.name})
 
     @action(methods=["POST"], detail=False)
     def update_user(self, request):
