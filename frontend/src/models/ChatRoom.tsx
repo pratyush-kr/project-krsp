@@ -112,7 +112,6 @@ export class Rooms {
       time: `${date.getHours()}:${date.getMinutes()}`,
       name: "You",
     };
-    console.log(new_message.message);
     const user: User = new User();
     const validToken: boolean = await user.verifyToken();
     if (!validToken) {
@@ -130,7 +129,7 @@ export class Rooms {
       await axios.post(axios.defaults.baseURL + "/krsp/chat/send_message/", new_message, config);
       socket?.send(JSON.stringify({ ...new_message, token: jwtCookie.jwt }));
     } catch (err: any) {
-      console.log(err);
+      console.error(err);
       if (err.response?.status === 401) {
         userContext.logout();
         localStorage.removeItem("user_info");

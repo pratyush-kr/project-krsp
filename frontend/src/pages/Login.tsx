@@ -21,7 +21,6 @@ const Login = () => {
     const loader = async () => {
       const user: UserClass = new UserClass();
       const isTokenValid: boolean = await user.verifyToken();
-      console.log(isTokenValid);
       if (isTokenValid) {
         const jwtToken: JwtCookie | null = await user.getCookieJson();
         if (jwtToken !== null && jwtToken.name === "Guest User") {
@@ -32,13 +31,12 @@ const Login = () => {
         }
       } else {
         const jwtToken: JwtCookie | null = await user.getAndSaveGuestToken();
-        console.log(jwtToken);
       }
     };
     try {
       loader();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, []);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

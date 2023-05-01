@@ -43,7 +43,6 @@ function KnowMore() {
     };
     loader();
   }, []);
-  console.log(data);
   return (
     <div className={styles.body}>
       <Header />

@@ -16,7 +16,7 @@ export const SelectChat = () => {
         const rooms = await Rooms.loadRooms(userContext);
         setRooms(rooms);
       } catch (err) {
-        console.log("something went wrong");
+        console.error("something went wrong");
       }
     };
     loader();

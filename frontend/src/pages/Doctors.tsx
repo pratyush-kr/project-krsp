@@ -42,7 +42,6 @@ function Doctors() {
   }, []);
   const handleReview = (event: React.MouseEvent) => {
     const id = event.currentTarget.id;
-    console.log(id);
     const doctor = doctors.filter((doctor) => `${doctor.id}` === id)[0];
     setDoctorName(doctor.name);
     setOpenDialog(true);

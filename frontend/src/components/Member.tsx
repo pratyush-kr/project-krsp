@@ -28,7 +28,6 @@ interface Props {
   index: number;
 }
 const Member: React.FC<Props> = ({ name, bio, imgSrc, urls, index }) => {
-  console.log(index);
   return (
     <motion.div
       animate={{

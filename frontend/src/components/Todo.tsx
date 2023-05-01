@@ -36,7 +36,6 @@ const Todo = ({ name, todo, setTodo, history, setHistory }: Props) => {
   };
   const handleCheckBoxClick = (event: any) => {
     const id = event.target.id;
-    console.log(id);
     TodoClass.done(todo, id, userContext, name, setTodo, setHistory);
   };
   return (
