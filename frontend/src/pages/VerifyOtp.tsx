@@ -48,8 +48,12 @@ const VerifyOtp = () => {
           otp: otp,
           password: password,
         };
-        const response = axios.post(axios.defaults.baseURL + "/krsp/user/update_password/", newData);
-        if (res.data["msg"] === "password changed") {
+        const response = await axios.post(
+          axios.defaults.baseURL + "/krsp/user/update_password/",
+          newData,
+          config
+        );
+        if (response.data["msg"] === "password changed") {
           router.push("/Login");
         }
       }

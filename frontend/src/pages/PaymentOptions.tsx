@@ -29,7 +29,9 @@ const style = {
 
 export default function PaymentOptions() {
   const schemeContext = useContext(SchemeContext);
-  const [doctors, setDoctors] = useState<[Doctors]>([{ id: "", name: "" }]);
+  const [doctors, setDoctors] = useState<[Doctors]>([
+    { id: "", name: "", experience: "", image: "", ratings: 0 },
+  ]);
   const [data, setData] = useState({
     userName: "",
     email: "",
@@ -115,8 +117,7 @@ export default function PaymentOptions() {
           setData((data) => {
             return { ...data, userName: jwtToken.name, email: jwtToken.email };
           });
-          const doctor: Doctor = new Doctor();
-          setDoctors(await doctor.getDoctors());
+          setDoctors(await Doctor.getDoctors());
         }
       } else {
         const jwtToken: JwtCookie | null = await user.getAndSaveGuestToken();

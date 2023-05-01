@@ -1,6 +1,5 @@
 import { Header } from "@/components/HeaderComponent";
 import styles from "@/styles/Home.module.css";
-import { useRouter } from "next/router";
 import { SliderData } from "../components/SliderData";
 import HomeCard from "@/components/HomeCard";
 import { Footer } from "@/components/FooterComponent";
@@ -18,10 +17,6 @@ const images = {
   }
 
 export default function Home() {
-  const router = useRouter();
-  const handleBookNowClick = (event: React.MouseEvent<HTMLElement>) => {
-    router.push("/book_now");
-  };
   const userContext = useContext(UserContext);
   useEffect(() => {
     const loader = async () => {
@@ -41,7 +36,6 @@ export default function Home() {
     };
     loader();
   }, []);
-  // The empty array ensures that the useEffect function is only called once, during the initial render of the component.
   return (
     <div className={styles.page}>
       <Header />

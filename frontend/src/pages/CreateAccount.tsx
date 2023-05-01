@@ -1,10 +1,8 @@
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import { Header } from "@/components/HeaderComponent";
 import { Footer } from "@/components/FooterComponent";
 import { Select, TextField, InputLabel, MenuItem } from "@mui/material";
 import { Button, FormControl, SelectChangeEvent } from "@mui/material";
-import axios from "axios";
-import { useEffect } from "react";
 import { FadeLoading } from "@/components/Spinners";
 import { motion } from "framer-motion";
 import { CreateUser, defaultCreateUser, CreateAccount as CreateAccountClass } from "@/models/CreateAccount";
@@ -13,10 +11,10 @@ import styles from "@/styles/CreateAccount.module.css";
 
 const CreateAccount = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [id, setId] = useState<string>("");
   const [dataURL, setDataURL] = useState<string | null>(null);
   const [data, setData] = useState<CreateUser>(defaultCreateUser);
   const router = useRouter();
+
   const onFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -27,31 +25,21 @@ const CreateAccount = () => {
     setLoading(true);
     event.preventDefault();
     let formData = new FormData();
-    formData.append("profile_picture", dataURL ? dataURL : "");
     const jsonData = { ...data, name: `${data.first_name} ${data.last_name}` };
     formData = CreateAccountClass.insertIsDoctor(jsonData);
-    await CreateAccountClass.createUserRequest(formData, setId, setLoading, router);
-  };
-  useEffect(() => {
+    formData.append("profile_picture", dataURL ? dataURL : "");
+    setLoading(true);
+    const id = await CreateAccountClass.createUserRequest(formData);
     const date = new Date();
     const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-    if (data.userType === "doctor") {
-      const doctor_data = {
-        fk_user: id,
-        create_date: today,
-        create_time: time,
-      };
-      axios.post(axios.defaults.baseURL + "/krsp/doctors/", doctor_data);
-    } else if (data.userType === "patient") {
-      const patient_data = {
-        fk_user: id,
-        create_date: today,
-        create_time: time,
-      };
-      axios.post(axios.defaults.baseURL + "/krsp/patient/", patient_data);
-    }
-  }, [data.userType, id]);
+    try {
+      const specializedUser = await CreateAccountClass.createSpecializedUser(data, id, today, time);
+    } catch (err: any) {}
+    setLoading(false);
+    router.push("/Login");
+  };
+
   const onFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target !== null && event.target.files !== null) {
       const file = event.target.files[0];

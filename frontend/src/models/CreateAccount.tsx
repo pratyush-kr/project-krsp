@@ -1,5 +1,8 @@
+import { Config } from "@/types/Config";
 import axios from "axios";
 import { NextRouter } from "next/router";
+import { User } from "@/models/User";
+import { Doctors } from "@/types/Doctors";
 
 export const defaultCreateUser = {
   first_name: "",
@@ -36,17 +39,57 @@ export class CreateAccount {
     }
     return formData;
   };
-  static createUserRequest = async (
-    formData: FormData,
-    setId: (value: string) => void,
-    setLoading: (value: boolean) => void,
-    router: NextRouter
-  ) => {
+  static createUserRequest = async (formData: FormData) => {
     try {
-      const response = await axios.post(axios.defaults.baseURL + "/krsp/user/create_user/", formData);
-      setId(response.data.id);
-      setLoading(false);
-      router.push("/Login");
+      const user = new User();
+      const validToken: boolean = await user.verifyToken();
+      if (!validToken) {
+        user.getAndSaveGuestToken();
+      }
+      const cookie = user.getCookieJson();
+      const config: Config = {
+        headers: {
+          Authorization: `Bearer ${cookie.jwt}`,
+        },
+      };
+      const response = await axios.post(axios.defaults.baseURL + "/krsp/user/create_user/", formData, config);
+      return response.data.id;
     } catch (err: any) {}
+  };
+
+  static createSpecializedUser = async (
+    data: { userType: string },
+    id: string,
+    today: string,
+    time: string
+  ) => {
+    let response: any;
+    const user = new User();
+    const validToken: boolean = await user.verifyToken();
+    if (!validToken) {
+      user.getAndSaveGuestToken();
+    }
+    const cookie = user.getCookieJson();
+    const config: Config = {
+      headers: {
+        Authorization: `Bearer ${cookie.jwt}`,
+      },
+    };
+    if (data.userType === "doctor") {
+      const doctor_data = {
+        fk_user: id,
+        create_date: today,
+        create_time: time,
+      };
+      response = await axios.post(axios.defaults.baseURL + "/krsp/doctors/", doctor_data, config);
+    } else if (data.userType === "patient") {
+      const patient_data = {
+        fk_user: id,
+        create_date: today,
+        create_time: time,
+      };
+      response = await axios.post(axios.defaults.baseURL + "/krsp/patient/", patient_data, config);
+    }
+    return response?.data;
   };
 }
